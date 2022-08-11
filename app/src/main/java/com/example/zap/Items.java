@@ -11,10 +11,10 @@ public class Items implements Parcelable {
     private String category;
     private double price;
     private int availableAmount;
-    private int rate; //may be removed
+    private int rate;
     private int userPoint;
     private int popularityPoint;
-    //private ArrayList<Review> reviews;
+//    private ArrayList<Review> reviews;
 
     public Items(String name, String description, String imageUrl, String category, double price, int availableAmount) {
         this.id = Utils.getID();
@@ -27,7 +27,7 @@ public class Items implements Parcelable {
         this.rate = 0;
         this.userPoint = 0;
         this.popularityPoint = 0;
-        //reviews = new ArrayList<>();
+//        reviews = new ArrayList<>();
     }
 
     protected Items(Parcel in) {
@@ -134,7 +134,7 @@ public class Items implements Parcelable {
     public void setPopularityPoint(int popularityPoint) {
         this.popularityPoint = popularityPoint;
     }
-
+//
 //    public ArrayList<Review> getReviews() {
 //        return reviews;
 //    }

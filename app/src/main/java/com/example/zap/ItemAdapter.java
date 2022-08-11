@@ -18,12 +18,10 @@ import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 
-import static com.example.zap.ItemActivity.ITEM_KEY;
-
-public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
+public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
 
     private ArrayList<Items> items = new ArrayList<>();
-    private Context context; //we need context because we are going to show images
+    private Context context;
 
     public ItemAdapter(Context context) {
         this.context = context;
@@ -36,12 +34,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        holder.txtName.setText(items.get(position).getName()); //setting values for View object
-        holder.txtPrice.setText(String.valueOf("₹"+items.get(position).getPrice()));
-        Glide.with(context)//Using Glide for image
+        holder.txtName.setText(items.get(position).getName());
+        holder.txtPrice.setText(String.valueOf( "₹" + items.get(position).getPrice()));
+        Glide.with(context)
                 .asBitmap()
                 .load(items.get(position).getImageUrl())
                 .into(holder.image);
@@ -67,7 +64,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView txtName, txtPrice; //initialising UI elements
+        private TextView txtName, txtPrice;
         private ImageView image;
         private MaterialCardView parent;
 

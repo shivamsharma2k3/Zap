@@ -18,7 +18,7 @@ public class ItemActivity extends AppCompatActivity {
 
     public static final String ITEM_KEY = "incoming_item";
 
-//    private RecyclerView reviewsRecView;
+    //    private RecyclerView reviewsRecView;
     private TextView txtName, txtPrice, txtDescription;
     private ImageView itemImage;
     private Button btnAddToCart;
@@ -59,7 +59,10 @@ public class ItemActivity extends AppCompatActivity {
                 btnAddToCart.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // TODO: 4/24/2020 Add Item to the cart
+                        Utils.addItemToCart(ItemActivity.this, incomingItem);
+                        Intent cartIntent = new Intent(ItemActivity.this, CartActivity.class);
+                        cartIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(cartIntent);
                     }
                 });
 

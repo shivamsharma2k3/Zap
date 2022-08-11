@@ -30,6 +30,19 @@ android {
 
 dependencies {
 
+    //retrofit dependency for networking
+    implementation 'com.squareup.retrofit2:retrofit:2.8.1'
+
+    //json converter
+    implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
+
+    // define a BOM and its version
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.10.0"))
+
+    // define any required OkHttp artifacts without version
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
+
     implementation 'androidx.appcompat:appcompat:1.4.2'
 
     //Material

@@ -1,11 +1,11 @@
 package com.example.zap;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,22 +22,31 @@ import java.util.Comparator;
 public class MainFragment extends Fragment {
 
     private BottomNavigationView bottomNavigationView;
+
     private RecyclerView newItemsRecView, popularItemsRecView, suggestedItemsRecView;
+
     private ItemAdapter newItemsAdapter, popularItemsAdapter, suggestedItemsAdapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-        
+
         initView(view);
         initBottomNavView();
-        initRecViews();
+
+//        Utils.clearSharedPreferences(getActivity());
+
         return view;
     }
 
-    private void initRecViews() {
+    @Override
+    public void onResume() {
+        super.onResume();
+        initRecViews();
+    }
 
+    private void initRecViews() {
         newItemsAdapter = new ItemAdapter(getActivity());
         newItemsRecView.setAdapter(newItemsAdapter);
         newItemsRecView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
@@ -87,11 +96,11 @@ public class MainFragment extends Fragment {
             Collections.sort(suggestedItems, Collections.reverseOrder(suggestedItemsComparator));
             suggestedItemsAdapter.setItems(suggestedItems);
         }
-
     }
 
     private void initBottomNavView() {
         bottomNavigationView.setSelectedItemId(R.id.home);
+        // TODO: 4/23/2020 Finish this
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -99,10 +108,14 @@ public class MainFragment extends Fragment {
                     case R.id.home:
                         break;
                     case R.id.search:
-                        Toast.makeText(getActivity(), "Search Selected", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), SearchActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
                         break;
                     case R.id.cart:
-
+                        Intent cartIntent = new Intent(getActivity(), CartActivity.class);
+                        cartIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(cartIntent);
                         break;
                     default:
                         break;
