@@ -2,6 +2,8 @@ package com.example.zap;
 
 import static com.example.zap.SecondCartFragment.ORDER_KEY;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,8 +21,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.razorpay.Checkout;
+import com.razorpay.PaymentResultListener;
+
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -37,12 +45,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 //import retrofit2.Retrofit;
 //import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ThirdCartFragment extends Fragment {
+public class ThirdCartFragment extends Fragment implements PaymentResultListener{
     private static final String TAG = "ThirdCartFragment";
 
     private Button btnBack, btnCheckout;
     private TextView txtItems, txtAddress, txtPhoneNumber, txtTotalPrice;
-    private RadioGroup rgPayment;
+
+    String phno;
+    String ttlprice;
 
     @Nullable
     @Override
@@ -51,16 +61,20 @@ public class ThirdCartFragment extends Fragment {
 
         initViews(view);
 
+        System.out.println(getActivity());
+
+        Checkout.preload(getActivity().getApplicationContext());
         Bundle bundle = getArguments();
         if (null != bundle) {
             final String jsonOrder = bundle.getString(ORDER_KEY);
             if (null != jsonOrder) {
                 Gson gson = new Gson();
-                Type type = new TypeToken<Order>() {}.getType();
+                Type type = new TypeToken<Order>() {
+                }.getType();
                 final Order order = gson.fromJson(jsonOrder, type);
                 if (null != order) {
                     String items = "";
-                    for (Items i: order.getItems()) {
+                    for (Items i : order.getItems()) {
                         items += "\n\t" + i.getName();
                     }
 
@@ -68,6 +82,9 @@ public class ThirdCartFragment extends Fragment {
                     txtAddress.setText(order.getAddress());
                     txtPhoneNumber.setText(order.getPhoneNumber());
                     txtTotalPrice.setText(String.valueOf(order.getTotalPrice()));
+
+                    phno = order.getPhoneNumber();
+                    ttlprice = String.valueOf(order.getTotalPrice()*100);
 
 
                     btnBack.setOnClickListener(new View.OnClickListener() {
@@ -86,61 +103,50 @@ public class ThirdCartFragment extends Fragment {
                     btnCheckout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            switch (rgPayment.getCheckedRadioButtonId()) {
-                                case R.id.rbPayPal:
-                                    order.setPaymentMethod("PayPal");
-                                    break;
-                                case R.id.rbCreditCard:
-                                    order.setPaymentMethod("Credit Card");
-                                    break;
-                                default:
-                                    order.setPaymentMethod("Unknown");
-                                    break;
-                            }
+                            makePayment();
 
                             order.setSuccess(true);
 
-                            // TODO: 4/27/2020 Send Your Request with Retrofit
 
-                            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor()
-                                    .setLevel(HttpLoggingInterceptor.Level.BODY);
+//                            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor()
+//                                    .setLevel(HttpLoggingInterceptor.Level.BODY);
+//
+//                            OkHttpClient client = new OkHttpClient.Builder()
+//                                    .addInterceptor(interceptor)
+//                                    .build();
+//
+//                            Retrofit retrofit = new Retrofit.Builder()
+//                                    .baseUrl("https://jsonplaceholder.typicode.com/")
+//                                    .addConverterFactory(GsonConverterFactory.create())
+//                                    .client(client)
+//                                    .build();
 
-                            OkHttpClient client = new OkHttpClient.Builder()
-                                    .addInterceptor(interceptor)
-                                    .build();
+//                            OrderEndPoint endPoint = retrofit.create(OrderEndPoint.class);
+//                            Call<Order> call = endPoint.newOrder(order);
+//                            call.enqueue(new Callback<Order>() {
+//                                @Override
+//                                public void onResponse(Call<Order> call, Response<Order> response) {
+//                                    Log.d(TAG, "onResponse: code: " + response.code());
+//                                    if (response.isSuccessful()) {
+//                                        Bundle resultBundle = new Bundle();
+//                                        resultBundle.putString(ORDER_KEY, gson.toJson(response.body()));
+//                                        PaymentResultFragment paymentResultFragment = new PaymentResultFragment();
+//                                        paymentResultFragment.setArguments(resultBundle);
+//                                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+//                                        transaction.replace(R.id.container, paymentResultFragment);
+//                                        transaction.commit();
+//                                    }else {
+//                                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+//                                        transaction.replace(R.id.container, new PaymentResultFragment());
+//                                        transaction.commit();
+//                                    }
+//                                }
 
-                            Retrofit retrofit = new Retrofit.Builder()
-                                    .baseUrl("https://jsonplaceholder.typicode.com/")
-                                    .addConverterFactory(GsonConverterFactory.create())
-                                    .client(client)
-                                    .build();
-
-                            OrderEndPoint endPoint = retrofit.create(OrderEndPoint.class);
-                            Call<Order> call = endPoint.newOrder(order);
-                            call.enqueue(new Callback<Order>() {
-                                @Override
-                                public void onResponse(Call<Order> call, Response<Order> response) {
-                                    Log.d(TAG, "onResponse: code: " + response.code());
-                                    if (response.isSuccessful()) {
-                                        Bundle resultBundle = new Bundle();
-                                        resultBundle.putString(ORDER_KEY, gson.toJson(response.body()));
-                                        PaymentResultFragment paymentResultFragment = new PaymentResultFragment();
-                                        paymentResultFragment.setArguments(resultBundle);
-                                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                                        transaction.replace(R.id.container, paymentResultFragment);
-                                        transaction.commit();
-                                    }else {
-                                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                                        transaction.replace(R.id.container, new PaymentResultFragment());
-                                        transaction.commit();
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<Order> call, Throwable t) {
-                                    t.printStackTrace();
-                                }
-                            });
+//                                @Override
+//                                public void onFailure(Call<Order> call, Throwable t) {
+//                                    t.printStackTrace();
+//                                }
+//                            });
                         }
                     });
                 }
@@ -150,8 +156,63 @@ public class ThirdCartFragment extends Fragment {
         return view;
     }
 
+    private void makePayment() {
+            Checkout checkout = new Checkout();
+            checkout.setKeyID("rzp_test_djjuT3UB9JyD85");
+            /**
+             * Instantiate Checkout
+             */
+
+            /**
+             * Set your logo here
+             */
+            checkout.setImage(R.drawable.logo);
+
+            /**
+             * Reference to current activity
+             */
+            final Activity activity = getActivity();
+
+            /**
+             * Pass your payment options to the Razorpay Checkout as a JSONObject
+             */
+            try {
+                JSONObject options = new JSONObject();
+
+                options.put("name", "ZAP");
+                options.put("description", "Reference No. #123456");
+                options.put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.jpg");
+//                options.put("order_id", "order_DBJOWzybf0sJbb");//from response of step 3.
+                options.put("theme.color", "#3399cc");
+                options.put("currency", "INR");
+                options.put("amount", ttlprice);//pass amount in currency subunits
+                options.put("prefill.email", "sharmashivam2k3@gmail.com");
+                options.put("prefill.contact",phno);
+                JSONObject retryObj = new JSONObject();
+                retryObj.put("enabled", true);
+                retryObj.put("max_count", 4);
+                options.put("retry", retryObj);
+
+                checkout.open(activity, options);
+
+            } catch(Exception e) {
+                Log.e("TAG", "Error in starting Razorpay Checkout", e);
+            }
+
+
+    }
+
+
+    @Override
+    public void onPaymentSuccess(String s) {
+    }
+
+    @Override
+    public void onPaymentError(int i, String s) {
+
+    }
+
     private void initViews(View view) {
-        rgPayment = view.findViewById(R.id.rgPaymentMethod);
         txtAddress = view.findViewById(R.id.txtAddress);
         txtPhoneNumber = view.findViewById(R.id.txtPhoneNumber);
         txtItems = view.findViewById(R.id.txtItems);
@@ -159,4 +220,6 @@ public class ThirdCartFragment extends Fragment {
         btnBack = view.findViewById(R.id.btnBack);
         btnCheckout = view.findViewById(R.id.btnCheckout);
     }
+
+
 }

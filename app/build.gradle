@@ -1,7 +1,9 @@
+import org.gradle.api.initialization.resolve.RepositoriesMode
+
+
 plugins {
     id 'com.android.application'
 }
-
 android {
     compileSdk 32
 
@@ -28,7 +30,14 @@ android {
 }
 
 
+
+
+
+
 dependencies {
+
+    //RazorPay
+    implementation 'com.razorpay:checkout:1.6.24'
 
     //retrofit dependency for networking
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'

@@ -21,7 +21,7 @@ public class FirstCartFragment extends Fragment implements CartAdapter.DeleteIte
 
     @Override
     public void getTotalPrice(double price) {
-        txtSum.setText(String.valueOf(price) + "$");
+        txtSum.setText(String.valueOf(price) + "₹");
     }
 
     @Override
