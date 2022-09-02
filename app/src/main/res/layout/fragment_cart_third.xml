@@ -97,12 +97,7 @@
         android:textStyle="bold"
         android:layout_centerHorizontal="true"/>
 
-    <TextView
-        android:id="@+id/success"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtPaymentDescription"
-        android:text=""/>
+
 
 
 
@@ -111,8 +106,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="200dp"
-        android:layout_below="@+id/success">
+        android:layout_marginBottom="20dp">
 
         <Button
             android:id="@+id/btnBack"

@@ -51,6 +51,9 @@ public class ThirdCartFragment extends Fragment implements PaymentResultListener
     private Button btnBack, btnCheckout;
     private TextView txtItems, txtAddress, txtPhoneNumber, txtTotalPrice;
 
+    String phno;
+    String ttlprice;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -79,6 +82,9 @@ public class ThirdCartFragment extends Fragment implements PaymentResultListener
                     txtAddress.setText(order.getAddress());
                     txtPhoneNumber.setText(order.getPhoneNumber());
                     txtTotalPrice.setText(String.valueOf(order.getTotalPrice()));
+
+                    phno = order.getPhoneNumber();
+                    ttlprice = String.valueOf(order.getTotalPrice()*100);
 
 
                     btnBack.setOnClickListener(new View.OnClickListener() {
@@ -179,9 +185,9 @@ public class ThirdCartFragment extends Fragment implements PaymentResultListener
 //                options.put("order_id", "order_DBJOWzybf0sJbb");//from response of step 3.
                 options.put("theme.color", "#3399cc");
                 options.put("currency", "INR");
-                options.put("amount", "50000");//pass amount in currency subunits
+                options.put("amount", ttlprice);//pass amount in currency subunits
                 options.put("prefill.email", "sharmashivam2k3@gmail.com");
-                options.put("prefill.contact","8100672344");
+                options.put("prefill.contact",phno);
                 JSONObject retryObj = new JSONObject();
                 retryObj.put("enabled", true);
                 retryObj.put("max_count", 4);
@@ -196,12 +202,14 @@ public class ThirdCartFragment extends Fragment implements PaymentResultListener
 
     }
 
+
     @Override
     public void onPaymentSuccess(String s) {
     }
 
     @Override
     public void onPaymentError(int i, String s) {
+
     }
 
     private void initViews(View view) {
