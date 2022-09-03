@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "483830184896",
+    "project_id": "zaphost-7caaa",
+    "storage_bucket": "zaphost-7caaa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:483830184896:android:42a0426d5e7b3457d36625",
+        "android_client_info": {
+          "package_name": "com.example.zap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "483830184896-47sh047gvp7g8oegp99sdrhlbrcrhurp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPTQeHjsIqGAgUkM23cNXkA_e--pRSoFg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "483830184896-47sh047gvp7g8oegp99sdrhlbrcrhurp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

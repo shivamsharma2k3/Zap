@@ -3,6 +3,7 @@ package com.example.zap;
 import static com.example.zap.AllCategoriesDialog.ALL_CATEGORIES;
 import static com.example.zap.AllCategoriesDialog.CALLING_ACTIVITY;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -41,7 +42,9 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.cart:
-                        Toast.makeText(MainActivity.this, "Cart Selected", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MainActivity.this, CartActivity.class);
+                        startActivity(intent);
+
                         break;
                     case R.id.categories:
                         AllCategoriesDialog dialog = new AllCategoriesDialog();

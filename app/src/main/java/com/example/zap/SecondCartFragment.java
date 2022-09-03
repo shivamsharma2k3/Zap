@@ -42,9 +42,9 @@ public class SecondCartFragment extends Fragment {
                 Type type = new TypeToken<Order>() {}.getType();
                 Order order = gson.fromJson(jsonOrder, type);
                 if (null != order) {
-                    edtTxtAddress.setText(order.getAddress());
+                    edtTxtAddress.setText(order.getBlockNumber());
                     edtTxtPhoneNumber.setText(order.getPhoneNumber());
-                    edtTxtZipCode.setText(order.getZipCode());
+                    edtTxtZipCode.setText(order.getRoomNumber());
                     edtTxtEmail.setText(order.getEmail());
                 }
             }
@@ -69,9 +69,9 @@ public class SecondCartFragment extends Fragment {
                     if (null != cartItems) {
                         Order order = new Order();
                         order.setItems(cartItems);
-                        order.setAddress(edtTxtAddress.getText().toString());
+                        order.setBlockNumber(edtTxtAddress.getText().toString());
                         order.setPhoneNumber(edtTxtPhoneNumber.getText().toString());
-                        order.setZipCode(edtTxtZipCode.getText().toString());
+                        order.setRoomNumber(edtTxtZipCode.getText().toString());
                         order.setEmail(edtTxtEmail.getText().toString());
                         order.setTotalPrice(calculateTotalPrice(cartItems));
 

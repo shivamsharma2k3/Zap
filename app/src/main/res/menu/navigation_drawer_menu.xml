@@ -16,9 +16,5 @@
         android:id="@+id/categories"
         android:icon="@drawable/categories"/>
 
-    <item
-        android:title="About"
-        android:id="@+id/about"
-        android:icon="@drawable/ic_about"/>
 
 </menu>

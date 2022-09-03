@@ -3,14 +3,12 @@ package com.example.zap;
 import static com.example.zap.SecondCartFragment.ORDER_KEY;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +17,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.razorpay.Checkout;
@@ -27,15 +29,6 @@ import com.razorpay.PaymentResultListener;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
-
-
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 //import okhttp3.OkHttpClient;
 //import okhttp3.logging.HttpLoggingInterceptor;
@@ -48,8 +41,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ThirdCartFragment extends Fragment implements PaymentResultListener{
     private static final String TAG = "ThirdCartFragment";
 
-    private Button btnBack, btnCheckout;
+    private Button btnBack, btnCheckout, btnConfirm;
     private TextView txtItems, txtAddress, txtPhoneNumber, txtTotalPrice;
+    private FirebaseFirestore firestore;
+
+
+
 
     String phno;
     String ttlprice;
@@ -76,10 +73,11 @@ public class ThirdCartFragment extends Fragment implements PaymentResultListener
                     String items = "";
                     for (Items i : order.getItems()) {
                         items += "\n\t" + i.getName();
+                        i.setAvailableAmount(i.getAvailableAmount()-1);
                     }
 
                     txtItems.setText(items);
-                    txtAddress.setText(order.getAddress());
+                    txtAddress.setText(order.getBlockNumber());
                     txtPhoneNumber.setText(order.getPhoneNumber());
                     txtTotalPrice.setText(String.valueOf(order.getTotalPrice()));
 
@@ -97,6 +95,25 @@ public class ThirdCartFragment extends Fragment implements PaymentResultListener
                             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                             transaction.replace(R.id.container, secondCartFragment);
                             transaction.commit();
+                        }
+                    });
+
+                    btnConfirm.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            firestore = FirebaseFirestore.getInstance();
+                            firestore.collection("Order").add(order)
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(DocumentReference documentReference) {
+                                            showToast("Success");
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    showToast(e.getMessage());
+                                }
+                            });
                         }
                     });
 
@@ -149,13 +166,17 @@ public class ThirdCartFragment extends Fragment implements PaymentResultListener
 //                            });
                         }
                     });
+
+
                 }
             }
         }
 
         return view;
     }
-
+    public void showToast(String message){
+        Toast.makeText(getContext(),""+message+"", Toast.LENGTH_SHORT).show();
+    }
     private void makePayment() {
             Checkout checkout = new Checkout();
             checkout.setKeyID("rzp_test_djjuT3UB9JyD85");
@@ -212,6 +233,7 @@ public class ThirdCartFragment extends Fragment implements PaymentResultListener
 
     }
 
+
     private void initViews(View view) {
         txtAddress = view.findViewById(R.id.txtAddress);
         txtPhoneNumber = view.findViewById(R.id.txtPhoneNumber);
@@ -219,6 +241,7 @@ public class ThirdCartFragment extends Fragment implements PaymentResultListener
         txtTotalPrice = view.findViewById(R.id.txtPrice);
         btnBack = view.findViewById(R.id.btnBack);
         btnCheckout = view.findViewById(R.id.btnCheckout);
+        btnConfirm = view.findViewById(R.id.rcheck);
     }
 
 

@@ -91,17 +91,24 @@
         android:layout_width="211dp"
         android:layout_height="58dp"
         android:layout_below="@+id/phoneLinLayout"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:text="Pay with RazorPay:"
         android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"/>
+        android:textStyle="bold" />
 
 
-
-
+    <Button
+        android:id="@+id/rcheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/relativeLast"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="81dp"
+        android:text="Confirm order" />
 
     <RelativeLayout
+        android:id="@+id/relativeLast"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -123,5 +130,7 @@
             android:text="Checkout" />
 
     </RelativeLayout>
+
+
 
 </RelativeLayout>

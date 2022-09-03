@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class Order {
     private int id;
     private ArrayList<Items> items;
-    private String address;
-    private String zipCode;
+    private String blockNumber;
+    private String roomNumber;
     private String phoneNumber;
     private String email;
     private double totalPrice;
@@ -16,8 +16,8 @@ public class Order {
     public Order(ArrayList<Items> items, String address, String zipCode, String phoneNumber, String email, double totalPrice, String paymentMethod, boolean success) {
         this.id = Utils.getOrderId();
         this.items = items;
-        this.address = address;
-        this.zipCode = zipCode;
+        this.blockNumber = address;
+        this.roomNumber = zipCode;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.totalPrice = totalPrice;
@@ -44,20 +44,20 @@ public class Order {
         this.items = items;
     }
 
-    public String getAddress() {
-        return address;
+    public String getBlockNumber() {
+        return blockNumber;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setBlockNumber(String blockNumber) {
+        this.blockNumber = blockNumber;
     }
 
-    public String getZipCode() {
-        return zipCode;
+    public String getRoomNumber() {
+        return roomNumber;
     }
 
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
     }
 
     public String getPhoneNumber() {
@@ -105,8 +105,8 @@ public class Order {
         return "Order{" +
                 "id=" + id +
                 ", items=" + items +
-                ", address='" + address + '\'' +
-                ", zipCode='" + zipCode + '\'' +
+                ", address='" + blockNumber + '\'' +
+                ", zipCode='" + roomNumber + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", email='" + email + '\'' +
                 ", totalPrice=" + totalPrice +
