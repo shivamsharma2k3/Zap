@@ -205,7 +205,6 @@ public class SearchActivity extends AppCompatActivity implements AllCategoriesDi
 
     private void initSearch() {
         if (!searchBox.getText().toString().equals("")) {
-            // TODO: 4/26/2020 get items
             String name = searchBox.getText().toString();
             ArrayList<Items> items = Utils.searchForItems(this, name);
             if (null != items) {
@@ -216,7 +215,6 @@ public class SearchActivity extends AppCompatActivity implements AllCategoriesDi
 
     private void initBottomNavView() {
         bottomNavigationView.setSelectedItemId(R.id.search);
-        // TODO: 4/23/2020 Finish this
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -229,6 +227,10 @@ public class SearchActivity extends AppCompatActivity implements AllCategoriesDi
                     case R.id.search:
                         break;
                     case R.id.cart:
+                        Intent intent2 = new Intent(SearchActivity.this, CartActivity.class);
+                        intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent2);
+
 
                         break;
                     default:

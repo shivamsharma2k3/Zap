@@ -6,10 +6,7 @@
         android:id="@+id/cart"
         android:icon="@drawable/ic_cart"/>
 
-    <item
-        android:title="Delivery"
-        android:id="@+id/delivery"
-        android:icon="@drawable/ic_car"/>
+
 
     <item
         android:title="Categories"

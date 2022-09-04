@@ -100,7 +100,6 @@ public class MainFragment extends Fragment {
 
     private void initBottomNavView() {
         bottomNavigationView.setSelectedItemId(R.id.home);
-        // TODO: 4/23/2020 Finish this
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
